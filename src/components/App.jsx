@@ -2,19 +2,21 @@ import VideoList from "./VideoList.js";
 import exampleVideoData from "../data/exampleVideoData.js";
 import VideoPlayer from "./VideoPlayer.js";
 // import React from 'react';
-console.log(exampleVideoData);
 class App extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
         beingPlayed: props.videos[0],
-        playList: props.videos
+        playList: props.videos.slice(1)
       }
-      this.onVideoClick = this.onVideoClick.bind(this);
     }
-    onVideoClick() {
-      var text = this;
-      console.log(text);
+    playVideo(video) {
+      this.state.playList.push(this.state.beingPlayed);
+      var indexOfVideo = this.state.playList.indexOf(video);
+      this.state.playList.splice(indexOfVideo, 1);
+      this.setState({
+        beingPlayed: video
+      });
     }
     render() {
      return (<div>
@@ -28,7 +30,7 @@ class App extends React.Component {
              <div><VideoPlayer video={this.state.beingPlayed}/></div>
            </div>
            <div className="col-md-5">
-             <div onClick={this.onVideoClick.bind(this)}> <VideoList videos={this.state.playList}/></div>
+             <div> <VideoList videos={this.state.playList} onClick={this.playVideo.bind(this)}/></div>
            </div>
          </div>
        </div>);
