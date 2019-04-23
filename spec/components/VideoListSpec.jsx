@@ -14,6 +14,7 @@ describe('VideoList', function() {
   });
 
   it('should render one `VideoListEntry` when given one video', function() {
+    
     var shallowRenderer = createRenderer();
 
     var oneFakeVideo = window.fakeVideoData.slice(-1);
