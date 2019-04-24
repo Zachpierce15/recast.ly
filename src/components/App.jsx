@@ -12,13 +12,13 @@ class App extends React.Component {
         max: 5,
         key: YOUTUBE_API_KEY,
         query: "diablo 3"
-      }
+      };
       this.state = {
         beingPlayed: exampleVideoData[0],
         playList: exampleVideoData,
         query: ''
-      }
-
+      };
+      this.changeQuery = _.debounce(this.changeQuery.bind(this),500);
     }
     componentDidMount() {
       var callBack = function(data) {
@@ -38,13 +38,18 @@ class App extends React.Component {
       });
     }
 
-    changeQuery(event) {
+    changeQuery(target) {
       //When clicked... Changes our query to the input text. 
-      
-      const keptEvent = event;
-      console.log(keptEvent);
-      this.setState({query: keptEvent.target.value});
-      console.log(keptEvent.target.value);
+      console.log(target);
+      this.setState({query: target});
+      this.option.query = this.state.query;
+      var callBack = function(data) {
+        this.setState({
+          beingPlayed: data[0],
+          playList: data
+        });
+      }
+      this.props.searchYouTube(this.option, callBack.bind(this));
     }
     startSearch() {
       this.option.query = this.state.query;
